@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import {Carousel} from 'react-bootstrap';
+import 'BestBooks.css';
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -7,23 +10,38 @@ class BestBooks extends React.Component {
       books: []
     }
   }
+  componentDidMount=()=>{
+    const server = process.env.REACT_APP_SERVER;
+  
 
-  /* TODO: Make a GET request to your API to fetch all the books from the database  */
+  axios.get(`${server}/books/getbooks?books=${book}`)
+  .then(result => {
+    console.log(result.data);
+    this.setState({
+      booksData:result.data.books,
+    });
+    console.log(this.state.booksData)
+  })
+  .catch(err => {
+    console.log(err ,'book collection is empty.');
+  })
+}
 
   render() {
 
-    /* TODO: render all the books in a Carousel */
-
     return (
-      <>
-        <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
+      <Carousel className="carousel">
+      {this.state.booksData.map((books)=>(
+             <Carousel.Item>
+            <Carousel.Caption>
+              <h3>{books.name}</h3>
+              <p>{books.description}</p>
+              <p>{books.status}</p>
+             </Carousel.Caption>
+           </Carousel.Item>
+      ))}
 
-        {this.state.books.length ? (
-          <p>Book Carousel coming soon</p>
-        ) : (
-          <h3>No Books Found :(</h3>
-        )}
-      </>
+     </Carousel>
     )
   }
 }
