@@ -15,7 +15,7 @@ class BestBooks extends React.Component {
     const server = process.env.REACT_APP_SERVER;
   
 
-  axios.get(`${server}/books/getbooks?books=${book}`)
+  axios.get(`${server}/books/getbooks?books=${books}`)
   .then(result => {
     console.log(result.data);
     this.setState({
