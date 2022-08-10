@@ -11,38 +11,50 @@ class BestBooks extends React.Component {
       books: []
     }
   }
-  componentDidMount=()=>{
-    const server = process.env.REACT_APP_SERVER;
-  
 
-  axios.get(`${server}/books/getbooks?books=${books}`)
-  .then(result => {
-    console.log(result.data);
-    this.setState({
-      booksData:result.data.books,
-    });
-    console.log(this.state.booksData)
-  })
-  .catch(err => {
-    console.log(err ,'book collection is empty.');
-  })
-}
+  getBooks = async () => {
+    const res = await axios.get(`${process.env.REACT_APP_SERVER}/books`);
+    this.setState({ books: res.data });
+    console.log(this.state);
+  }
+
+
+  componentDidMount() {
+    console.log("inside the componentDidMount");
+    this.getBooks();
+  }
 
   render() {
 
+
     return (
-      <Carousel className="carousel">
-      {this.state.booksData.map((books)=>(
-             <Carousel.Item>
-            <Carousel.Caption>
-              <h3>{books.name}</h3>
-              <p>{books.description}</p>
-              <p>{books.status}</p>
+      <>
+        <h2 style={{textAlign: 'center'}}>Your Books Library</h2>
+
+        {this.state.books.length ? (
+           <Carousel style={{margin: '50px 10%'}}>
+            {
+              this.state.books.map(bb=>{ 
+                return(
+           <Carousel.Item>
+             <img
+               className="d-block w-100"
+               alt={bb.title}
+             />
+             <Carousel.Caption style={{backgroundColor: 'darkgray'}}>
+               <h3>{bb.title}</h3>
+               <p>{bb.description}</p>
+               <p>{bb.status}</p>
              </Carousel.Caption>
            </Carousel.Item>
-      ))}
-
-     </Carousel>
+                )})
+            }
+         </Carousel>
+          
+        ) : (
+          <h3>No Books Found :(</h3>
+        )}
+      </>
     )
   }
 }

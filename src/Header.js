@@ -1,25 +1,24 @@
 import React from 'react';
 import { Navbar, NavItem } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import AuthButtons from './Auth/AuthButtons';
-import { useAuth0 } from '@auth0/auth0-react';
+import AuthButton from './Auth/AuthButtons';
+import Profile from './profile';
 
-function Header(){
-  const { isAuthenticated } = useAuth0();
- 
+class Header extends React.Component {
+  render() {
     return (
-      
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand>My Favorite Books</Navbar.Brand>
-        <NavItem><Link to="/" className="nav-link">Home</Link></NavItem>
-        {isAuthenticated &&
-          <NavItem><Link to="/profile" className="nav-link">User Profile</Link></NavItem>
-        }
-        <AuthButtons className={'Auth'} />
-      </Navbar>
-      
+      <div className="navBar">
+        <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" >
+          <Navbar.Brand >My Favorite Books</Navbar.Brand>
+          <NavItem><Link to="/" className="nav-link">Home</Link></NavItem>
+          <NavItem><Link to="/profile" className="nav-link">Profile</Link></NavItem>
+          <NavItem><Link to="/about" className="nav-link">About</Link></NavItem>
+          <AuthButton />
+          <Profile />
+        </Navbar>
+      </div>
     )
   }
-
+}
 
 export default Header;
